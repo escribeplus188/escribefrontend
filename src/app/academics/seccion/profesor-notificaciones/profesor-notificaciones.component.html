@@ -1,0 +1,126 @@
+<div class=" h-full flex flex-col justify-center">
+
+    <!-- Encabezado -->
+        <div class="border-b border-gray-300 pb-2" >
+            <h5 class="text-center font-bold text-lg" >Notificaciones</h5>
+        </div>
+    <!--  -->
+
+    <!-- Formulardio para los dato  -->
+
+        <div class="w-full h-[90%]  overflow-y-auto" >
+
+            <div *ngIf="cargandoNotificaciones">
+                <p-progressSpinner ariaLabel="cargando..." />
+            </div>
+
+            <div>
+
+                <form [formGroup]="mensajeNotificacionForm" (ngSubmit)="mandarMensaje()" class="w-full my-4 flex flex-col md:flex-row justify-around items-center ">
+
+                    <!--  Correo electronico -->
+                      <div class="p-field mb-3 w-full sm:w-full md:w-1/3">
+          
+                        <div class="p-inputgroup">
+  
+                          <span class="p-inputgroup-addon bg-white border ">
+                            <i class="pi pi-envelope text-blue-500"></i>
+                          </span>
+  
+                          <span class="p-float-label">
+                            <input #correoReceptor pInputText  placeholder=""  formControlName="correoReceptor"  class="pl-[10px] border border-blue-500 focus:border-blue-600 focus:ring-0"  />
+                            <label for="correoReceptor">Correo electrónico receptor</label>
+                          </span>
+  
+                          <span class="p-inputgroup-addon bg-white ">
+                            <i class="pi pi-dddeye text-blue-500"></i>
+                          </span>
+  
+                        </div>
+                      
+                        <div *ngIf="mensajeNotificacionForm.get('correoReceptor')?.invalid && mensajeNotificacionForm.get('correoReceptor')?.touched" class="p-error">
+                          Por favor, ingresa un correo electrónico válido.
+                        </div>
+          
+                      </div>
+                    <!--  -->
+
+                      <!--  Correo electronico -->
+                      <div class="p-field mb-3 w-full sm:w-full md:w-1/3 ">
+          
+                        <div class="p-inputgroup">
+  
+                          <span class="p-inputgroup-addon bg-white border ">
+                            <i class="pi pi-envelope text-blue-500"></i>
+                          </span>
+  
+                          <span class="p-float-label">
+                            <input #contenido pInputText  placeholder=""  formControlName="contenido"  class="pl-[10px] border border-blue-500 focus:border-blue-600 focus:ring-0"  />
+                            <label for="contenido">Contenido</label>
+                          </span>
+  
+                          <span class="p-inputgroup-addon bg-white ">
+                            <i class="pi pi-dddeye text-blue-500"></i>
+                          </span>
+  
+                        </div>
+                      
+                        <div *ngIf="mensajeNotificacionForm.get('contenido')?.invalid && mensajeNotificacionForm.get('contenido')?.touched" class="p-error">
+                          Por favor, ingresa un mensaje.
+                        </div>
+          
+                      </div>
+                    <!--  -->
+        
+              
+                    <!-- Botón de Iniciar Sesión -->
+                      <div class="p-d-flex p-jc-between w-full sm:w-full md:w-1/3">
+                        <button (click)="mandarMensaje()" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                          Enviar
+                        </button>
+                      </div>
+                    <!--  -->
+        
+                  </form>
+
+            </div>
+
+            <div *ngIf="cargandoNotificaciones == false " >
+
+              <p-table [value]="listaNotificiacones" [paginator]="true" [rows]="5" sortMode="single">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th pSortableColumn="usuario_emisor">Emisor</th>
+                    <th pSortableColumn="contenido">Contenido</th>
+                    <th pSortableColumn="tipo_notificacion">Tipo Notificación</th>
+                    <th pSortableColumn="fecha_envio">Fecha Envío</th>
+                    <th pSortableColumn="leido">Leído</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-notificacion>
+                  <tr [ngClass]="{'clickable': notificacion.notificacion.tipoNotificacion === 'Calificar'}" (click)="notificacion.notificacion.tipoNotificacion === 'Calificar' ? CambiarComponente(notificacion) : {}">
+                    <td>{{ notificacion.emisor.nombre_completo }}</td>
+                    <td>{{ notificacion.notificacion.contenido }}</td>
+                    <td>{{ notificacion.notificacion.tipoNotificacion }}</td>
+                    <td>{{ notificacion.notificacion.fechaEnvio | date:'d/M/yyyy, h:mm' }}</td>
+                    <td (click)="$event.stopPropagation(); NotifacioensLeida(notificacion.notificacion.id)">
+                      <p-checkbox [(ngModel)]="notificacion.notificacion.leido" [binary]="true"></p-checkbox>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+                
+            </div>
+
+    </div>
+
+    <!--  -->
+
+    <!-- Footer boones  -->
+
+         <div class="flex flex-col items-center justify-center ">
+        </div>
+
+    <!--  -->
+
+</div>

@@ -1,0 +1,8 @@
+{
+    "/uploaded-images/*": {
+      "target": "https://escribeapi.onrender.com",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true
+    }
+  }

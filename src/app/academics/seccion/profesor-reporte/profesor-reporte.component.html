@@ -1,0 +1,70 @@
+<div class=" h-full flex flex-col">
+
+    <!-- Encabezado -->
+        <div class="border-b border-gray-300 pb-2 flex items-center justify-between">
+
+            <h5 class="font-bold text-lg text-center flex-grow">Reporte general de cursos</h5>
+        
+            <div>
+
+                <div class=""  pTooltip="Descargar el reporte en PDF" tooltipPosition="left"  placeholder="right"   >
+                        <button (click)="descargarPDF()" class="text-md bg-blue-500 text-white font-bold py-2 px-4 w-full  focus:outline-none focus:shadow-outline">
+                            <span class=""> <i class="pi pi-download text-white-500"></i> </span>
+                        </button>
+                </div>
+
+            </div>
+        
+        </div>
+    <!--  -->
+
+    <!-- cuerpo del componente  -->
+     <div>
+
+        <div class="flex flex-row items-center justify-end mt-4 gap-2">
+
+            <p-calendar [(ngModel)]="fechaInicio" placeholder="Fecha inicio" class="w-full sm:w-1/4"></p-calendar>
+            <p-calendar [(ngModel)]="fechaFin" placeholder="Fecha fin" class="w-full sm:w-1/4"></p-calendar>
+
+            <button pButton label="Buscar" icon="pi pi-search" (click)="getReporte()" class="ml-2"></button>
+
+                <button (click)="limpiarFiltros()" class="bg-red-500 text-white font-bold py-2 px-4 focus:outline-none focus:shadow-outline">X</button>
+        </div>
+        
+
+        <p-table [value]="listaCursosReporteFiltrado" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="5"  sortMode="single">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="fechaCreacion" style="width:12.5%" class="text-center" > <div class="flex items-center justify-center"> Fecha creación  <p-sortIcon field="code">    </p-sortIcon>  </div> </th>
+                    <th pSortableColumn="nombre"  style="width:12.5%" class="text-center" > <div class="flex items-center justify-center"> Nombre   <p-sortIcon field="code">    </p-sortIcon> </div> </th>
+                    <th pSortableColumn="tipocurso" style="width:12.5%" class="text-center" > <div class="flex items-center justify-center"> Tipo curso  <p-sortIcon field="escuela"> </p-sortIcon> </div> </th>
+                    <th style="width:12.5%" class="text-center" > <div class="flex items-center justify-center"> Inscritos </div> </th>
+                    <th style="width:12.5%" class="text-center" > <div class="flex items-center justify-center"> Bloqueados </div> </th>
+                    <th style="width:12.5%" class="text-center" > <div class="flex items-center justify-center"> Desasignados </div> </th>
+                    <th style="width:12.5%" class="text-center" > <div class="flex items-center justify-center"> Completados </div> </th>
+                    <th style="width:12.5%" class="text-center" > <div class="flex items-center justify-center"> Evaluciones ganadas </div> </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-curso>
+                <tr>
+                    <td class="text-center" >{{ curso.fechaCreacion  | date: 'dd/MM/yyyy' }}</td>
+                    <td class="text-center">{{ curso.nombre }}</td>
+                    <td class="text-center" >{{ curso.tipoCurso }}</td>
+                    <td class="text-center" >{{ curso.inscritos }}</td>
+                    <td class="text-center" >{{ curso.bloqueados }}</td>
+                    <td class="text-center" >{{ curso.desasignados }}</td>
+                    <td class="text-center" >{{ curso.completados }}</td>
+                    <td class="text-center" >{{ curso.evaluciones_ganadas }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    
+    </div>
+    <!--  -->
+
+    <!-- Footer boones  -->
+    <div class="flex flex-col items-center justify-center ">
+    </div>
+<!--  -->
+
+</div>

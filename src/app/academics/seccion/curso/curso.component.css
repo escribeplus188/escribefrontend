@@ -1,49 +1,70 @@
-::ng-deep p-tabView > div > div > div > ul > li.p-highlight{
-    color: #2563eb;
-    border-bottom: 3px solid #2563eb;
-}
-
-
-/* Encabezado */
-.encabezado {
-    text-align: center;
-    margin-bottom: 1rem;
-}
-
-.encabezado p {
-    font-size: 1rem;
-    color: #555;
-}
-
-/* Acordeón */
-.accordion-btn {
-    background-color: #3490dc;
-    color: #fff;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    text-align: left;
-    width: 100%;
-    cursor: pointer;
-    font-weight: bold;
-    border: none;
-}
-
-.accordion-content {
-    background-color: #fff;
-    border-radius: 0.5rem;
+/* Contenido de las lecciones */
+.contenido-lecciones {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto; /* Scroll para el contenido de las lecciones */
+  }
+  
+  /* Ajustes para el tabView (contenedor de pestañas) */
+  ::ng-deep p-tabView {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ocupa el 100% de la altura disponible */
+  }
+  
+  /* Scroll para el contenido dentro de cada pestaña */
+  ::ng-deep p-tabPanel {
+    flex-grow: 1;
+    overflow-y: auto; /* Scroll independiente dentro de las pestañas */
     padding: 1rem;
-    margin-top: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.accordion-content img {
+  }
+  
+  /* Ajustes para iframe (videos y pasos) dentro de las lecciones */
+  iframe {
     max-width: 100%;
     height: auto;
-}
-
-.accordion-content iframe {
-    width: 100%;
-    height: 200px;
-    border: none;
     border-radius: 0.5rem;
-}
+    border: none;
+  }
+
+  /* Ajustes para pantallas extra grandes */
+@media (min-width: 2440px) {
+    .contenido-lecciones {
+        height: 100%; /* Tamaño máximo en pantallas extra grandes */
+    }
+  }
+  
+  /* Ajustes para pantallas grandes */
+  @media (max-width: 1440px) {
+    .contenido-lecciones {
+      height: 90%; /* Ajustar la altura según el tamaño de la pantalla */
+    }
+  }
+  
+  /* Ajustes para pantallas medianas */
+  @media (max-width: 1200px) {
+    .contenido-lecciones {
+      height: 80%; /* Ajustar la altura según el tamaño de la pantalla */
+    }
+  }
+  
+  /* Ajustes para pantallas pequeñas */
+  @media (max-width: 768px) {
+    .contenido-lecciones {
+      height: 70%; /* Ajustar la altura según el tamaño de la pantalla */
+    }
+  }
+  
+  /* Ajustes para pantallas muy pequeñas */
+  @media (max-width: 480px) {
+    .contenido-lecciones {
+      height: 60%; /* Ajustar la altura según el tamaño de la pantalla */
+    }
+  
+    /* Asegurar que el iframe en móviles se ajuste correctamente */
+    iframe {
+      width: 100%;
+      height: 200px;
+    }
+  }  

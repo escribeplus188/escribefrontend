@@ -6,6 +6,8 @@ import { NotificacionesService } from 'src/app/services/funciones/notificaciones
 
 import { CalificarCursoService } from 'src/app/services/academics/curso/calificar-curso.service';
 
+import { environment } from 'src/environments/environment';
+
 @Component({
   selector: 'app-revisar-curso',
   templateUrl: './revisar-curso.component.html',
@@ -111,6 +113,14 @@ export class RevisarCursoComponent implements OnInit {
 
 
        }
+
+       getFullImageUrl(respuesta: string): string {
+        if (respuesta && !respuesta.startsWith('http')) {
+          console.log(`${environment.apiUrl}/uploaded-images/${respuesta}`);
+          return `${environment.apiUrl}${respuesta}`;
+        }
+        return respuesta;
+      }
 
   //////////////////////////////////////////////////////////////////////////////////
 

@@ -53,8 +53,16 @@
                 <!-- Para preguntas tipo 'link' -->
                 <div *ngIf="pregunta.pregunta.tipo === 'link'" class="text-lg font-semibold p-2">
                   <p>Respuesta del estudiante:</p>
+
+                  <!-- Si la respuesta es un enlace, mostrar el enlace -->
+                  <div *ngIf="pregunta.pregunta.linkIntroducido; else mostrarImagen">
+                    <a [href]="pregunta.pregunta.linkIntroducido" target="_blank">{{ pregunta.pregunta.linkIntroducido }}</a>
+                  </div>
+
                   <!-- Asumiendo que 'pregunta.respuesta' contiene la URL de la imagen -->
-                  <img [src]="pregunta.respuesta" alt="Respuesta del estudiante" class="max-w-full h-auto">
+                  <ng-template #mostrarImagen>
+                    <img [src]="getFullImageUrl(pregunta.respuesta)" alt="Respuesta del estudiante" class="max-w-full h-auto">
+                  </ng-template>
               </div>
             </ng-template>
           </p-virtualScroller>

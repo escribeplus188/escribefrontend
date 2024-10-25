@@ -3,6 +3,7 @@ import { Component, Input, OnInit, AfterViewInit, AfterViewChecked, EventEmitter
 import { NotificacionesService } from 'src/app/services/funciones/notificaciones.service';
 import { CalificarCursoService } from 'src/app/services/academics/curso/calificar-curso.service';
 import { ImageUploadService } from 'src/app/services/funciones/image-upload.service';
+import { environment } from 'src/environments/environment';
 
 import SignaturePad from 'signature_pad';
 
@@ -10,6 +11,7 @@ interface Pregunta {
   pregunta: string;
   tipo: string;
   opciones?: Opcion[];
+  linkIntroducido?: string;
 }
 
 interface Opcion {
@@ -34,7 +36,7 @@ export class CalificarCursoComponent implements OnInit, AfterViewInit, AfterView
 
   signaturePad!: SignaturePad;
   signatureImage: string | null = null;
-
+  imageLoaded: boolean = false;
 
   // Declaración del contador y arreglo de respuestas
   public puntaje: number = 0;
@@ -72,7 +74,8 @@ export class CalificarCursoComponent implements OnInit, AfterViewInit, AfterView
       if (!this.respuestasSeleccionadas.some(r => r.pregunta.pregunta === pregunta.pregunta)) {
         this.respuestasSeleccionadas.push({
           pregunta: pregunta,
-          opcion: { texto: '', correcta: false }  // Asumir incorrecta si no se contesta
+          opcion: { texto: '', correcta: false },
+          linkIntroducido: pregunta.linkIntroducido
         });
       }
     });
@@ -80,8 +83,22 @@ export class CalificarCursoComponent implements OnInit, AfterViewInit, AfterView
     console.log("ponderacion por pregunta ", this.ponderacionPorPregunta);
 
     if (this.test.evaluacionGanada) {
-      this.signatureImage = `/uploaded-images/${this.test.id}.png`;
+      const imageUrl = `${environment.apiUrl}/uploaded-images/${this.test.id}.png`;
+      this.checkImageExists(imageUrl);
     }
+  }
+
+  checkImageExists(url: string): void {
+    const img = new Image();
+    img.onload = () => {
+      this.signatureImage = url;
+      this.imageLoaded = true;
+    };
+    img.onerror = () => {
+      this.signatureImage = null;
+      this.imageLoaded = false;
+    };
+    img.src = url;
   }
 
   //////////////////////////////////////////////////////////////////////////////////

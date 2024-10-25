@@ -126,7 +126,7 @@ export class AcademicsComponent implements OnInit {
     }
 
     public marcarTodasNotificaciones(){
-      this.listadoNotificaciones.map( ( notificacion: any) => this.NotifacioensLeida( notificacion.id )  );
+      this.listadoNotificaciones.map( ( notificacion: any) => this.NotifacioensLeida( notificacion.notificacion.id )  );
     }
     
 

@@ -1,7 +1,6 @@
-<div class="" >
-
+<div class="div-principal container">
     <div>
-        <p> {{ test.mini_tema }} </p>
+        <p>{{ test.mini_tema }}</p>
     </div>
 
     <div *ngIf="test.evaluacionGanada == true">
@@ -14,86 +13,64 @@
         </div>
     </div>
 
-
-    <p-virtualScroller [value]="cuestionarioSeleccionado" class="border-1 surface-border border-round" [style]="{'width': '100%'}" scrollHeight="350px" [itemSize]="250">
-
-        <ng-template pTemplate="pregutna" let-pregunta >
-
-            <div class="flex align-items-center p-2 " [ngClass]="{ 'surface-hover': pregunta.index % 2 === 0 }">
-
+    <!-- Contenedor de preguntas con scroll limitado -->
+    <div class="preguntas-container">
+        <div class="pregunta" *ngFor="let pregunta of cuestionarioSeleccionado">
+            <div class="flex align-items-center p-2" [ngClass]="{ 'surface-hover': pregunta.index % 2 === 0 }">
+                <!-- Tipo 'botones' -->
                 <div *ngIf="pregunta.tipo == 'botones'; else CompletarFrase">
-                    
                     <p class="text-lg font-semibold">{{ pregunta.pregunta }}</p>
-            
-                
                     <div class="flex flex-wrap gap-2 mt-2 items-center">
-                
                         <div *ngFor="let opcion of pregunta.opciones">
                             <button (click)="responderPregunta(pregunta, opcion)" type="button" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
                                 {{ opcion.texto }}
                             </button>
                         </div>
-                
                     </div>
-            
                 </div>
-                
-                
             </div>
 
+            <!-- Tipo 'completa' -->
             <ng-template #CompletarFrase>
-
                 <div *ngIf="pregunta.tipo == 'completa'; else EspacioEscribir">
-
                     <p class="text-lg font-semibold">{{ pregunta.pregunta }}</p>
-
-                    <input  type="text"  [(ngModel)]="pregunta.respuestaIntroducida"  placeholder="Escribe tu respuesta"  class="border border-gray-300 p-2 rounded mb-4" />
-
+                    <input type="text" [(ngModel)]="pregunta.respuestaIntroducida" placeholder="Escribe tu respuesta" class="border border-gray-300 p-2 rounded mb-4" />
                     <button (click)="responderPreguntaCompletar(pregunta)" type="button" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
                         revisar
                     </button>
-
-
                 </div>
-
             </ng-template>
 
+            <!-- Tipo 'link' con pizarra -->
             <ng-template #EspacioEscribir>
-
-                <div *ngIf="pregunta.tipo == 'link' ; else EspacioDefault" >
-
-                    <h2>{{ pregunta.pregunta }}</h2>
-
-                    <!-- Canvas donde se dibujará -->
-                    <canvas #signatureCanvas class="signature-pad" width="600" height="300"></canvas>
-
-                    <!-- Botones para limpiar o guardar el dibujo -->
-                    <button (click)="clearSignature()">Limpiar</button>
-                    <button (click)="saveSignature(pregunta)">Guardar</button>
-
-                    <!-- Mostrar imagen guardada -->
-                    <div *ngIf="signatureImage">
-                        <h4>Imagen Guardada:</h4>
-                        <img [src]="signatureImage" alt="Dibujo guardado" />
-                    </div>
-
+                <div *ngIf="pregunta.tipo == 'link'; else EspacioDefault">
+                  <h2>{{ pregunta.pregunta }}</h2>
+                  <br>
+                  <p>Subir enlace si no desea usar la pizarra:</p>
+                  <input type="text" [(ngModel)]="pregunta.linkIntroducido" placeholder="Ingresa el enlace" class="border border-gray-300 p-2 rounded mb-4" />
+                  
+                  <!-- Mostrar la imagen si existe -->
+                  <div *ngIf="signatureImage && imageLoaded">
+                    <h4>Imagen Guardada:</h4>
+                    <img [src]="signatureImage" alt="Dibujo guardado" class="max-w-full h-auto" />
+                  </div>
+  
+                  
+                  <!-- Canvas solo se muestra si no hay imagen ni enlace -->
+                  <canvas *ngIf="!imageLoaded" #signatureCanvas class="signature-pad" width="600" height="300"></canvas>
+                  <button *ngIf="!imageLoaded"(click)="clearSignature()">Limpiar</button>
+                  <button *ngIf="!imageLoaded"(click)="saveSignature(pregunta)">Guardar</button>
                 </div>
-
             </ng-template>
 
-            <ng-template #EspacioDefault ></ng-template>
-
-        </ng-template>
-
-    </p-virtualScroller>
-
-    
-    <div class="flex flex-wrap mt-2 justify-end items-end">
-                
-            <button (click)="enviaExamen()" [disabled]="isButtonDisabled" type="button" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-                Enviar <p-progressSpinner *ngIf="isButtonDisabled" ariaLabel="loading"  styleClass="custom-spinner"   />
-            </button>
-
+            <ng-template #EspacioDefault></ng-template>
+        </div>
     </div>
-      
+
+    <!-- Botón de envío -->
+    <div class="flex flex-wrap mt-2 justify-end items-end">
+        <button (click)="enviaExamen()" [disabled]="isButtonDisabled" type="button" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+            Enviar <p-progressSpinner *ngIf="isButtonDisabled" ariaLabel="loading" styleClass="custom-spinner" />
+        </button>
+    </div>
 </div>
